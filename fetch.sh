@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 CLONES_REPO=clones
 CLONES_FILE=clones.json
 TIMESTAMP=$(date +%s)
@@ -14,7 +16,7 @@ while
         -H "X-GitHub-Api-Version: 2022-11-28" \
         "https://api.github.com/users/$GITHUB_REPOSITORY_OWNER/repos?per_page=100&page=$repo_page_index")
 
-    echo "$raw_repo_list"
+    echo "$raw_repo_list" >&2
 
     mapfile -t repos_on_page < <(echo "$raw_repo_list" | jq -r ".[].full_name")
     public_repos+=("${repos_on_page[@]}")
