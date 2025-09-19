@@ -17,3 +17,5 @@ jobs:
           bash fetch.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        permissions:
+          contents: write
