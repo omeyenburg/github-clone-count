@@ -16,8 +16,6 @@ while
         -H "X-GitHub-Api-Version: 2022-11-28" \
         "https://api.github.com/users/$GITHUB_REPOSITORY_OWNER/repos?per_page=100&page=$repo_page_index")
 
-    echo "$raw_repo_list" >&2
-
     mapfile -t repos_on_page < <(echo "$raw_repo_list" | jq -r ".[].full_name")
     public_repos+=("${repos_on_page[@]}")
     ((repo_page_index++))
@@ -25,9 +23,9 @@ while
     [[ "$(echo "$raw_repo_list" | jq ". | length")" -eq 100 ]]
 do true; done
 
-git clone "https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY_OWNER/$CLONES_REPO.git"
 git config user.name "github-actions[bot]"
 git config user.email "github-actions[bot]@users.noreply.github.com"
+git clone "https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY_OWNER/$CLONES_REPO.git"
 
 cd "$CLONES_REPO"
 
